@@ -51,6 +51,7 @@ script = ExtResource("5_vpc7g")
 scaleAcceleration = 0.5
 motionDelta = 0.0
 lifespan = 0.45
+rotation_mode = 2
 
 [node name="AirplaneMesh" type="MeshInstance3D" parent="mesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)

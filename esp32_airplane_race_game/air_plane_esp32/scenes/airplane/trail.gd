@@ -12,11 +12,20 @@ enum InterpolationDirection {
 	BACKWARD
 }
 
+enum RotationMode {
+	FREE,
+	FIXED_X,
+	FIXED_Y,
+	FIXED_Z
+}
+
+
 var points: Array[Vector3]  = []
 var widths: Array  = []
 var lifePoints: Array[float] = []
 
 @export var trailEnabled: bool = true
+
 
 @export var fromWidth: float = 0.5
 @export var toWidth: float = 0.0
@@ -29,6 +38,7 @@ var lifePoints: Array[float] = []
 @export var startColor: Color = Color(1.0, 1.0, 1.0, 1.0)
 @export var endColor: Color = Color(1.0, 1.0, 1.0, 0.0)
 
+@export var rotation_mode: RotationMode = RotationMode.FREE
 
 @export var colorInterpolationMode: InterpolationMode = InterpolationMode.LINEAR
 @export var interpolationDirection: InterpolationDirection = InterpolationDirection.FORWARD
@@ -106,7 +116,17 @@ func _process(delta: float) -> void:
 func appendPoint() -> void:
 	var direction: Vector3 = get_global_transform().origin - oldPos
 	direction = direction.normalized()
-	rotation.y = atan2(direction.x, direction.z)
+
+	# Ajustar rotación según el modo seleccionado
+	match rotation_mode:
+		RotationMode.FREE:
+			rotation.y = atan2(direction.x, direction.z)  # Rotación libre (comportamiento actual)
+		RotationMode.FIXED_X:
+			rotation.x = 0
+		RotationMode.FIXED_Y:
+			rotation.y = 0
+		RotationMode.FIXED_Z:
+			rotation.z = 0
 
 	points.append(get_global_transform().origin)
 	widths.append([
@@ -114,6 +134,7 @@ func appendPoint() -> void:
 		get_global_transform().basis.x * fromWidth - get_global_transform().basis.x * toWidth
 	])
 	lifePoints.append(0.0)
+	
 
 func removePoint(i: int) -> void:
 	points.remove_at(i)
