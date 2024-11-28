@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://fvcyniyxv5m"]
+
+[sub_resource type="Gradient" id="Gradient_fds4x"]
+colors = PackedColorArray(0.317647, 0.536029, 0.952941, 0.745098, 0.492411, 0.45847, 0.892921, 0.760784)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ih4d6"]
+gradient = SubResource("Gradient_fds4x")
+
+[resource]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.680664, 0.625, 1, 1)
+albedo_texture = SubResource("GradientTexture2D_ih4d6")

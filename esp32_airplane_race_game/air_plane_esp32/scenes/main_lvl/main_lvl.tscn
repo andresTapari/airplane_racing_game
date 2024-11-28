@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://c61gu7tt5i7sb"]
+
+[ext_resource type="PackedScene" uid="uid://b4lun0o3aylb5" path="res://scenes/airplane/airplane.tscn" id="1_gna3j"]
+[ext_resource type="PackedScene" uid="uid://io6g74fbqv1k" path="res://scenes/interpolatedCamera/InterpolatedCamera.tscn" id="2_y8boi"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pehqf"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_rdd2i"]
+sky_material = SubResource("ProceduralSkyMaterial_pehqf")
+
+[sub_resource type="Environment" id="Environment_6ris2"]
+background_mode = 2
+sky = SubResource("Sky_rdd2i")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_6ris2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="airplane" parent="." instance=ExtResource("1_gna3j")]
+
+[node name="Camera3D" parent="." instance=ExtResource("2_y8boi")]
+target_path = NodePath("../airplane")
+offset = Vector3(0, 4.5, 9)

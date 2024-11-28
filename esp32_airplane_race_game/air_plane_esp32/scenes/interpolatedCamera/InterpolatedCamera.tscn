@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://io6g74fbqv1k"]
+
+[ext_resource type="Script" path="res://scenes/interpolatedCamera/InterpolatedCamera.gd" id="1_r1alt"]
+
+[node name="Camera3D" type="Camera3D"]
+transform = Transform3D(1, -2.26267e-08, 2.48393e-08, 1.54268e-08, 0.965926, 0.258819, -2.98491e-08, -0.258819, 0.965926, 0, 3, 8.90895)
+script = ExtResource("1_r1alt")
