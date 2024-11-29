@@ -42,16 +42,16 @@ func get_input(delta):
 
 	# Turn (roll/yaw) input
 	#turn_input = Input.get_axis("roll_right", "roll_left")
-	turn_input = Input.get_axis("ui_right", "ui_left")
+	turn_input = -Input.get_axis("ui_right", "ui_left")
 	if forward_speed <= 0.5:
 		turn_input = 0
 
 	# Pitch (climb/dive) input
 	pitch_input = 0
 	if not grounded:
-		pitch_input -= Input.get_action_strength("ui_down")
+		pitch_input += Input.get_action_strength("ui_down")
 	if forward_speed >= min_flight_speed:
-		pitch_input += Input.get_action_strength("ui_up")
+		pitch_input -= Input.get_action_strength("ui_up")
 #	pitch_input =  Input.get_axis("pitch_down", "pitch_up")
 
 func _physics_process(delta):
