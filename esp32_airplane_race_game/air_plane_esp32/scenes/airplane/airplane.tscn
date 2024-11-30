@@ -66,3 +66,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 mesh = ExtResource("2_5pcrh")
 skeleton = NodePath("../..")
 script = ExtResource("3_2452b")
+
+[node name="Muzzle" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0, -5.31007)

@@ -1,5 +1,9 @@
 extends CharacterBody3D
 
+
+# Nodo de la munición
+@onready var BULLET = preload("res://scenes/bullet/bullet.tscn")
+
 # Can't fly below this speed
 var min_flight_speed = 5
 # Maximum airspeed
@@ -29,30 +33,20 @@ var can_shoot = true
 
 @onready var mesh = $mesh
 
-func _ready():
-	pass
-
 func get_input(delta):
 	# Throttle input
 	if Input.is_action_pressed("throttle_up"):
 		target_speed = min(forward_speed + throttle_delta * delta, max_flight_speed)
 	if Input.is_action_pressed("throttle_down"):
-		var limit = 0 if grounded else min_flight_speed
-		target_speed = max(forward_speed - throttle_delta * delta, limit)
+		target_speed = max(forward_speed - throttle_delta * delta, max_flight_speed)
 
-	# Turn (roll/yaw) input
-	#turn_input = Input.get_axis("roll_right", "roll_left")
 	turn_input = -Input.get_axis("ui_right", "ui_left")
-	if forward_speed <= 0.5:
-		turn_input = 0
 
-	# Pitch (climb/dive) input
-	#pitch_input = 0
-	#if not grounded:
-		#pitch_input += Input.get_action_strength("ui_down")
-	#if forward_speed >= min_flight_speed:
-		#pitch_input -= Input.get_action_strength("ui_up")
 	pitch_input =  -Input.get_axis("ui_down", "ui_up")
+	
+	# Manejar disparo con el botón 1 del joystick
+	if Input.is_action_just_pressed("shoot"):
+		spawn_bullet()
 
 func _physics_process(delta):
 	get_input(delta)
@@ -71,13 +65,13 @@ func _physics_process(delta):
 	# Movement is always forward
 	velocity = -transform.basis.z * forward_speed
 
-	# Landing
-	#if is_on_floor():
-		#if not grounded:
-			#rotation.x = 0
-		#grounded = true
-	#else:
-		#grounded = false
-		
-		
 	move_and_slide()
+
+
+func spawn_bullet():
+	# Crear una nueva munición en la dirección del Muzzle
+	if BULLET:
+		var bullet = BULLET.instantiate()
+		bullet.init_speed = forward_speed
+		get_parent().add_child(bullet)  # Agregar al nivel o nodo raíz
+		bullet.global_transform = $Muzzle.global_transform  # Alinear posición y rotación con el Muzzle
