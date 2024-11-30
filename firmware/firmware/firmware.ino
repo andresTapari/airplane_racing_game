@@ -1,10 +1,15 @@
+/*
+
+  - Joystick.h: https://github.com/MHeironimus/ArduinoJoystickLibrary
+*/
+
 #include <Wire.h>
 #include <Joystick.h>
 
 // Configuración del Joystick
 Joystick_ Joystick(JOYSTICK_DEFAULT_REPORT_ID, 
                    JOYSTICK_TYPE_GAMEPAD, 
-                   0, // Botones
+                   3, // Número de botones
                    0, // Hat Switch
                    true, true, false, // X, Y, Z
                    false, false, false, // Rx, Ry, Rz
@@ -14,6 +19,11 @@ Joystick_ Joystick(JOYSTICK_DEFAULT_REPORT_ID,
 // Direcciones y registros del MPU-6050
 const int MPU6050_ADDR = 0x68;
 const int MPU6050_ACCEL_XOUT_H = 0x3B;
+
+// Pines de los botones
+const int BUTTON_1 = 4;
+const int BUTTON_2 = 5;
+const int BUTTON_3 = 6;
 
 // Variables para calibración
 int16_t xOffset = 0;
@@ -26,7 +36,7 @@ const int16_t Y_MIN = -15700; // Valor mínimo para Accel Y
 const int16_t Y_MAX = 15800;  // Valor máximo para Accel Y
 
 // Tamaño de la zona muerta
-const int DEADZONE = 10; // Ajustada para rangos más grandes
+const int DEADZONE = 10;
 
 void setup() {
   // Inicializar comunicación I2C
@@ -35,6 +45,11 @@ void setup() {
   Wire.write(0x6B); // Registro de Power Management
   Wire.write(0);    // Salir de modo de suspensión
   Wire.endTransmission(true);
+
+  // Configurar botones como entradas con pull-up
+  pinMode(BUTTON_1, INPUT);
+  pinMode(BUTTON_2, INPUT);
+  pinMode(BUTTON_3, INPUT);
 
   // Inicializar el puerto serie
   Serial.begin(115200);
@@ -78,6 +93,11 @@ void loop() {
   Joystick.setXAxis(joyX);
   Joystick.setYAxis(joyY);
 
+  // Leer estado de los botones y enviar al joystick
+  Joystick.setButton(0, digitalRead(BUTTON_1) == HIGH); // Botón 1
+  Joystick.setButton(1, digitalRead(BUTTON_2) == HIGH); // Botón 2
+  Joystick.setButton(2, digitalRead(BUTTON_3) == HIGH); // Botón 3
+
   // Imprimir en el puerto serie para depuración
   Serial.print("Accel X: ");
   Serial.print(accelX);
@@ -86,7 +106,13 @@ void loop() {
   Serial.print(" | Accel Y: ");
   Serial.print(accelY);
   Serial.print(" | Mapped Y: ");
-  Serial.println(joyY);
+  Serial.print(joyY);
+  Serial.print(" | Button 1: ");
+  Serial.print(digitalRead(BUTTON_1) == LOW);
+  Serial.print(" | Button 2: ");
+  Serial.print(digitalRead(BUTTON_2) == LOW);
+  Serial.print(" | Button 3: ");
+  Serial.println(digitalRead(BUTTON_3) == LOW);
 
   delay(10); // Control de frecuencia de actualización
 }
