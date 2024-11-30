@@ -11,7 +11,7 @@
 radius = 1.27032
 height = 5.43301
 
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_lwbta"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_lry1y"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8idxh"]
 shading_mode = 0
@@ -45,7 +45,7 @@ transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="mesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00406184, 0, -1.59234)
 material_override = ExtResource("5_4ywch")
-mesh = SubResource("ImmediateMesh_lwbta")
+mesh = SubResource("ImmediateMesh_lry1y")
 skeleton = NodePath("../..")
 script = ExtResource("5_vpc7g")
 scaleAcceleration = 0.5

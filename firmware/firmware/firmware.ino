@@ -36,7 +36,7 @@ const int16_t Y_MIN = -15700; // Valor mínimo para Accel Y
 const int16_t Y_MAX = 15800;  // Valor máximo para Accel Y
 
 // Tamaño de la zona muerta
-const int DEADZONE = 10;
+const int DEADZONE = 0;
 
 void setup() {
   // Inicializar comunicación I2C
@@ -98,22 +98,6 @@ void loop() {
   Joystick.setButton(1, digitalRead(BUTTON_2) == HIGH); // Botón 2
   Joystick.setButton(2, digitalRead(BUTTON_3) == HIGH); // Botón 3
 
-  // Imprimir en el puerto serie para depuración
-  Serial.print("Accel X: ");
-  Serial.print(accelX);
-  Serial.print(" | Mapped X: ");
-  Serial.print(joyX);
-  Serial.print(" | Accel Y: ");
-  Serial.print(accelY);
-  Serial.print(" | Mapped Y: ");
-  Serial.print(joyY);
-  Serial.print(" | Button 1: ");
-  Serial.print(digitalRead(BUTTON_1) == LOW);
-  Serial.print(" | Button 2: ");
-  Serial.print(digitalRead(BUTTON_2) == LOW);
-  Serial.print(" | Button 3: ");
-  Serial.println(digitalRead(BUTTON_3) == LOW);
-
   delay(10); // Control de frecuencia de actualización
 }
 
@@ -140,9 +124,4 @@ void calibrateSensor() {
   // Calcular valores promedio como offset inicial
   xOffset = sumX / numSamples;
   yOffset = sumY / numSamples;
-
-  Serial.print("Calibración completada: X Offset = ");
-  Serial.print(xOffset);
-  Serial.print(", Y Offset = ");
-  Serial.println(yOffset);
 }

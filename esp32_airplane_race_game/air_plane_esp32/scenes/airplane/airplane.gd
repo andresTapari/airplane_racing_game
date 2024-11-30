@@ -1,13 +1,13 @@
 extends CharacterBody3D
 
 # Can't fly below this speed
-var min_flight_speed = 12
+var min_flight_speed = 5
 # Maximum airspeed
 var max_flight_speed = 40
 # Turn rate
 var turn_speed = 0.75
 # Climb/dive rate
-var pitch_speed = 0.5
+var pitch_speed = 1.5
 # Wings "autolevel" speed
 var level_speed = 3.0
 # Throttle change speed
@@ -16,7 +16,7 @@ var throttle_delta = 50
 var acceleration = 6.0
 
 # Current speed
-var forward_speed = 0
+var forward_speed = 40
 # Throttle input speed
 var target_speed = 0
 # Lets us change behavior when grounded
@@ -47,18 +47,18 @@ func get_input(delta):
 		turn_input = 0
 
 	# Pitch (climb/dive) input
-	pitch_input = 0
-	if not grounded:
-		pitch_input += Input.get_action_strength("ui_down")
-	if forward_speed >= min_flight_speed:
-		pitch_input -= Input.get_action_strength("ui_up")
-#	pitch_input =  Input.get_axis("pitch_down", "pitch_up")
+	#pitch_input = 0
+	#if not grounded:
+		#pitch_input += Input.get_action_strength("ui_down")
+	#if forward_speed >= min_flight_speed:
+		#pitch_input -= Input.get_action_strength("ui_up")
+	pitch_input =  -Input.get_axis("ui_down", "ui_up")
 
 func _physics_process(delta):
 	get_input(delta)
 	transform.basis = transform.basis.rotated(transform.basis.x, pitch_input * pitch_speed * delta)
 	transform.basis = transform.basis.rotated(Vector3.UP, turn_input * turn_speed * delta)
-
+	
 	# Bank when turning
 	if grounded:
 		mesh.rotation.z = 0
@@ -72,12 +72,12 @@ func _physics_process(delta):
 	velocity = -transform.basis.z * forward_speed
 
 	# Landing
-	if is_on_floor():
-		if not grounded:
-			rotation.x = 0
-		grounded = true
-	else:
-		grounded = false
+	#if is_on_floor():
+		#if not grounded:
+			#rotation.x = 0
+		#grounded = true
+	#else:
+		#grounded = false
 		
 		
 	move_and_slide()
